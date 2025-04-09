@@ -41,6 +41,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Bump version
+        id: version
         run: |
           # Get current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -73,9 +74,13 @@ jobs:
           git push
           git push --tags
 
+          # Set output for other steps
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: v${{ steps.version.outputs.new_version }}
           name: Release v${{ steps.version.outputs.new_version }}
           body: |
             ## What's Changed
