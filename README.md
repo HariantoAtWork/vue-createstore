@@ -1,4 +1,4 @@
-# Vue CreateStore
+# @harianto/vue-createstore
 
 A lightweight utility for creating reactive stores in Vue 3 applications. This package provides a simple way to create stores with reactive state, methods, and computed properties.
 
@@ -14,19 +14,19 @@ A lightweight utility for creating reactive stores in Vue 3 applications. This p
 
 ```bash
 # Using npm
-npm install vue-createstore
+npm install @harianto/vue-createstore
 
 # Using yarn
-yarn add vue-createstore
+yarn add @harianto/vue-createstore
 
 # Using pnpm
-pnpm add vue-createstore
+pnpm add @harianto/vue-createstore
 ```
 
 ## Usage
 
 ```javascript
-import { createStore } from 'vue-createstore'
+import { createStore } from '@harianto/vue-createstore'
 
 // Create a store
 const store = createStore({
