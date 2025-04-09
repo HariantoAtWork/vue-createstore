@@ -11,6 +11,11 @@ A lightweight utility for creating reactive stores in Vue 3 applications. This p
 - Lightweight and zero dependencies (except Vue 3)
 - TypeScript friendly
 
+## Requirements
+
+- Node.js v20.18.3 or higher
+- Vue 3.x
+
 ## Installation
 
 ```bash
