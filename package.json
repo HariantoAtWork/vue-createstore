@@ -1,6 +1,6 @@
 {
   "name": "@harianto/vue-createstore",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Vue Reactive as a Store",
   "type": "module",
   "packageManager": "pnpm@8.15.4",
