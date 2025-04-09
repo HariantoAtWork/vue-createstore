@@ -1,0 +1,1 @@
+pnpm i -D rollup @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-terser

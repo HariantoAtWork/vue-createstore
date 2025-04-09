@@ -1,11 +1,11 @@
 // stores/createStore.js
 import { reactive } from 'vue'
 
-export function createStore({ state = {}, methods = {}, getters = {} }) {
+const createStore = function ({ data = {}, methods = {}, computed = {} }) {
   const store = reactive({
-    ...state,
+    ...data,
     ...methods,
-    ...Object.entries(getters).reduce(
+    ...Object.entries(computed).reduce(
       (acc, [key, fn]) => ({
         ...acc,
         get [key]() {
@@ -17,7 +17,7 @@ export function createStore({ state = {}, methods = {}, getters = {} }) {
   })
 
   if (import.meta.hot) {
-    const savedState = { ...state }
+    const savedState = { ...data }
 
     import.meta.hot.dispose(() => {
       Object.assign(savedState, store)
@@ -30,3 +30,5 @@ export function createStore({ state = {}, methods = {}, getters = {} }) {
 
   return store
 }
+
+export { createStore as default }
