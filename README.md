@@ -26,7 +26,7 @@ pnpm add @harianto/vue-createstore
 ## Usage
 
 ```javascript
-import { createStore } from '@harianto/vue-createstore'
+import createStore from '@harianto/vue-createstore'
 
 // Create a store
 const store = createStore({
