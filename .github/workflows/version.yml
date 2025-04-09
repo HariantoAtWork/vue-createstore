@@ -92,5 +92,8 @@ jobs:
             ```bash
             pnpm add @harianto/vue-createstore@latest
             ```
+          draft: false
+          prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
