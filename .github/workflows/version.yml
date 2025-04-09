@@ -16,81 +16,76 @@ on:
 jobs:
   version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
-      - name: Install dependencies
-        run: pnpm install
-      
+
       - name: Configure Git
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-      
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: Bump version
-        id: bump-version
         run: |
           # Get current version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
           
           # Determine new version based on input
-          if [ "${{ github.event.inputs.version_type }}" = "major" ]; then
-            NEW_VERSION=$(node -p "const [major, minor, patch] = '$CURRENT_VERSION'.split('.'); `${parseInt(major) + 1}.0.0`")
-          elif [ "${{ github.event.inputs.version_type }}" = "minor" ]; then
-            NEW_VERSION=$(node -p "const [major, minor, patch] = '$CURRENT_VERSION'.split('.'); `${major}.${parseInt(minor) + 1}.0`")
-          else
-            NEW_VERSION=$(node -p "const [major, minor, patch] = '$CURRENT_VERSION'.split('.'); `${major}.${minor}.${parseInt(patch) + 1}`")
-          fi
+          case "${{ github.event.inputs.version_type }}" in
+            "major")
+              NEW_VERSION="$((major + 1)).0.0"
+              ;;
+            "minor")
+              NEW_VERSION="${major}.$((minor + 1)).0"
+              ;;
+            "patch")
+              NEW_VERSION="${major}.${minor}.$((patch + 1))"
+              ;;
+          esac
           
           # Update package.json
-          node -e "const pkg = require('./package.json'); pkg.version = '$NEW_VERSION'; fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n')"
+          npm version $NEW_VERSION --no-git-tag-version
           
-          # Output the new version for other steps
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-          # Create a commit with the version bump
+          # Create commit
           git add package.json
           git commit -m "chore: bump version to $NEW_VERSION"
           
-          # Create a tag
+          # Create tag
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
           
-          # Push changes and tag
+          # Push changes
           git push
           git push --tags
-      
-      - name: Create GitHub Release
+
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.bump-version.outputs.new_version }}
-          name: Release v${{ steps.bump-version.outputs.new_version }}
+          name: Release v${{ steps.version.outputs.new_version }}
           body: |
             ## What's Changed
             
             This release includes various improvements and bug fixes.
             
-            ## Installation
+            ### How to Upgrade
             
             ```bash
-            npm install @harianto/vue-createstore@${{ steps.bump-version.outputs.new_version }}
+            pnpm add @harianto/vue-createstore@latest
             ```
-            
-            ## Documentation
-            
-            For full documentation, visit [the GitHub repository](https://github.com/HariantoAtWork/vue-createstore).
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
