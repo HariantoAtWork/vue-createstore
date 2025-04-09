@@ -1,12 +1,24 @@
 {
   "name": "@harianto/vue-createstore",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Vue Reactive as a Store",
   "type": "module",
   "packageManager": "pnpm@8.15.4",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
   "unpkg": "dist/index.umd.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "vue",
+    "vue3",
+    "store",
+    "reactive",
+    "state-management",
+    "persistence"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,10 +27,6 @@
     "type": "git",
     "url": "git+ssh://git@github.com/HariantoAtWork/vue-createstore.git"
   },
-  "keywords": [
-    "vue",
-    "reactive"
-  ],
   "author": "Harianto van Insulinde",
   "license": "ISC",
   "bugs": {
@@ -31,5 +39,8 @@
     "@rollup/plugin-terser": "^0.4.4",
     "rollup": "^4.39.0",
     "rollup-plugin-vue": "^6.0.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
   }
 }
