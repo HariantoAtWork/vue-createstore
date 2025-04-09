@@ -1,4 +1,3 @@
-// stores/createStore.js
 import { reactive } from 'vue'
 
 const createStore = function ({ data = {}, methods = {}, computed = {} }) {
