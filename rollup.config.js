@@ -45,7 +45,7 @@ export default {
     },
     {
       // UMD (Universal Module Definition) format for browser and Node.js
-      file: 'dist/index.umd.js', // Output file path
+      file: pkg.unpkg, // Output file path
       format: 'umd', // Output format
       name: 'VueCreateStore', // Global variable name for UMD
       exports: 'named', // Export named exports
