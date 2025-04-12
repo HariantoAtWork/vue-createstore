@@ -1,6 +1,7 @@
 # Development Guide
 
 This document provides guidelines and instructions for developing the Vue CreateStore package.
+Test
 
 ## Prerequisites
 
