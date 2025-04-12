@@ -1,13 +1,15 @@
-name: Build & Test
+name: Manual Publish to NPM
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.4.4)'
+        required: true
+        type: string
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -42,6 +45,10 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # Optional: add test step here if needed
-      # - name: Run tests
-      #   run: pnpm test
+      - name: Update version
+        run: pnpm version ${{ github.event.inputs.version }} --no-git-tag-version
+
+      - name: Publish to NPM
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
